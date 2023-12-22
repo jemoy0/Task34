@@ -1,17 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Friend, HomePage } from './components/router';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
+const Api = {
+  friends: [
+    {name: "Артем", age: 16, hobby: "Футбол"},
+    {name: "Максим", age: 16, hobby: "Програмування"},
+    {name: "Даня", age: 16, hobby: "Баскетбол"},
+  ],
+
+  all: function(){return this.friends},
+  get: function(name){
+    const isFriend = f => f.name === name
+    return this.friends.find(isFriend)
+  }
+}
+
+
+const router = createBrowserRouter([
+  {
+    path: `/`,
+    element: <HomePage friends={Api.all()}/>
+  },
+  {
+    path: `/:friendName`,
+    element: <Friend api={Api} />
+  }
+])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router}></RouterProvider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
