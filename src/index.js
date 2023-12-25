@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Friend, HomePage } from './components/router';
+import { Friend, Header, FriendList, HomePage } from './components/router';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 const Api = {
@@ -17,16 +17,25 @@ const Api = {
   }
 }
 
-
 const router = createBrowserRouter([
   {
-    path: `/`,
-    element: <HomePage friends={Api.all()}/>
+    path: "/",
+    element: <Header/>,
+    children: [
+      {
+        path: "",
+        element: <HomePage/>
+      },
+      {
+        path: `friends`,
+        element: <FriendList friends={Api.all()}/>
+      },
+      {
+        path: `friends/:friendName`,
+        element: <Friend api={Api} />
+      }
+    ]
   },
-  {
-    path: `/:friendName`,
-    element: <Friend api={Api} />
-  }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
